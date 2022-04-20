@@ -46,7 +46,7 @@ docker ps
 if [[ ${NON_SR_FLAG} == '1' ]]; then
   echo
   echo "> Upscale 4k without sr on non_sr container"
-  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -c:v libx264 -c:a copy -filter_complex "scale=w=iw*6:h=ih*6" "${OUTPUT_DIR}/iu_4k.mp4" -y
+  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -c:v copy -c:a copy -filter_complex "scale=w=iw*6:h=ih*6" "${OUTPUT_DIR}/iu_4k.mp4" -y
 fi
 
 echo
