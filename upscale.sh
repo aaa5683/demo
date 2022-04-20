@@ -2,7 +2,7 @@
 
 # ffmpeg -hide_banner -i input/iu.mp4 -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale=w=iw*6:h=ih*6" output/iu_4k.mp4 -y
 
-echo "[INFO] start upscaling."
+echo "= start upscaling."
 
 source /opt/xilinx/xcdr/setup.sh
 
@@ -18,8 +18,8 @@ done
 FFMPEG_ARGS=${ARR[@]}
 
 cmd="/app/ffmpeg -hide_banner -y ${FFMPEG_ARGS}"
-echo "[INFO] COMMAND ${cmd}"
+echo "= COMMAND ${cmd}"
 eval $cmd
-echo "[INFO] finish."
+echo "= finish."
 
 sleep 3

@@ -2,9 +2,9 @@
 
 # ffmpeg -hide_banner -i input/iu.mp4 -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale_startrek=w=iw*6:h=ih*6:fpga=alveo:c=1" output/iu_4k_sr.mp4 -y
 
-echo "[INFO] start upscaling with super resolution."
+echo "= start upscaling with super resolution."
 
-echo "[INFO] activating drm."
+echo "= activating drm."
 
 ./drm_man --conf=conf.json --cred=cred.json
 
@@ -21,13 +21,11 @@ do
 done
 FFMPEG_ARGS=${ARR[@]}
 
-echo "[INFO] start upscaling with super resolution."
-
 cmd="/app/ffmpeg -hide_banner -y ${FFMPEG_ARGS}"
-echo "[INFO] COMMAND ${cmd}"
+echo "= COMMAND ${cmd}"
 eval $cmd
 
 killall drm_man
-echo "[INFO] deactivating drm."
-echo "[INFO] finish."
+echo "= deactivating drm."
+echo "= finish."
 sleep 3
