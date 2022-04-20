@@ -46,11 +46,7 @@ docker ps
 if [[ ${NON_SR_FLAG} == '1' ]]; then
   echo
   echo "> Upscale 4k without sr on non_sr container"
-  time docker exec -it non_sr bash /app/upscale.sh \
-    -i ${INPUT_FILE} \
-    -c:v libx264 -c:a copy \ 
-    -filter_complex "scale=w=iw*6:h=ih*6" \ 
-    "${OUTPUT_DIR}/iu_4k.mp4" -y
+  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -c:v libx264 -c:a copy -filter_complex "scale=w=iw*6:h=ih*6" "${OUTPUT_DIR}/iu_4k.mp4" -y
 fi
 
 echo
@@ -58,18 +54,11 @@ echo
 if [[ ${SR_FLAG} == '1' ]]; then
   echo
   echo "> Upscale 4k with sr on sr container"
-  time docker exec -it sr bash /app/upscale_with_sr.sh \
-    -i input/iu.mp4 \
-    -c:v mpsoc_vcu_h264 -c:a copy \
-    -filter_complex "scale_startrek=w=iw*6:h=ih*6:fpga=alveo:c=1" \
-    "${OUTPUT_DIR}/iu_4k_sr.mp4" -y
+  time docker exec -it sr bash /app/upscale_with_sr.sh -i input/iu.mp4 -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale_startrek=w=iw*6:h=ih*6:fpga=alveo:c=1" "${OUTPUT_DIR}/iu_4k_sr.mp4" -y
 fi
 
 if [[ ${STACK_FLAG} == '1' ]]; then
   echo
   echo "> Stack 2 videos"
-  time docker exec -it sr /app/stack.sh \
-  -hide_banner -i output_sr/iu_4k.mp4 -i output_sr/iu_4k_sr.mp4 \
-  -c:v mpsoc_vcu_h264 -c:a copy \
-  -filter_complex hstack -y output_sr/iu_4k_hstack.mp4
+  time docker exec -it sr /app/stack.sh -hide_banner -i output_sr/iu_4k.mp4 -i output_sr/iu_4k_sr.mp4 -c:v mpsoc_vcu_h264 -c:a copy -filter_complex hstack -y output_sr/iu_4k_hstack.mp4
 fi

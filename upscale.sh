@@ -17,8 +17,6 @@ do
 done
 FFMPEG_ARGS=${ARR[@]}
 
-echo "[INFO] start upscaling with super resolution."
-
 cmd="/app/ffmpeg -hide_banner -y ${FFMPEG_ARGS}"
 echo "[INFO] COMMAND ${cmd}"
 eval $cmd
