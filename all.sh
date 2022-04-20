@@ -11,14 +11,14 @@ cd /home/bm100/sr-test
 
 if [[ ${SETTING_FLAG} == '1' ]]; then
   echo
-  echo "= Remove containers below"
+  echo "> Remove containers below"
   docker stop non_sr
   docker stop sr
 
   echo
 
   echo
-  echo "= Create non_sr container"
+  echo "> Create non_sr container"
   docker run --privileged -itd --rm --name non_sr \
     -v ${PWD}/demo/upscale.sh:/app/upscale.sh \
     -v ${PWD}/input:/app/input \
@@ -29,7 +29,7 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
   echo
 
   echo
-  echo "= Create sr container"
+  echo "> Create sr container"
   docker run --privileged -itd --rm --name sr \
     -v ${PWD}/demo/upscale_with_sr.sh:/app/upscale_with_sr.sh \
     -v ${PWD}/demo/stack.sh:/app/stack.sh \
@@ -40,11 +40,12 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
 fi
 
 echo
-echo "= Show container list"
+echo "> Show container list"
 docker ps
 
 if [[ ${NON_SR_FLAG} == '1' ]]; then
-  echo "upscale 4k without sr on sr container"
+  echo
+  echo "> Upscale 4k without sr on non_sr container"
   time docker exec -it non_sr bash /app/upscale.sh \
     -i ${INPUT_FILE} \
     -c:v libx264 -c:a copy \ 
@@ -55,7 +56,8 @@ fi
 echo
 
 if [[ ${SR_FLAG} == '1' ]]; then
-  echo "upscale 4k with sr on non_sr container"
+  echo
+  echo "> Upscale 4k with sr on sr container"
   time docker exec -it sr bash /app/upscale_with_sr.sh \
     -i input/iu.mp4 \
     -c:v mpsoc_vcu_h264 -c:a copy \
@@ -64,7 +66,8 @@ if [[ ${SR_FLAG} == '1' ]]; then
 fi
 
 if [[ ${STACK_FLAG} == '1' ]]; then
-  echo "stack 2 videos"
+  echo
+  echo "> stack 2 videos"
   time docker exec -it sr /app/stack.sh \
   -hide_banner -i output_sr/iu_4k.mp4 -i output_sr/iu_4k_sr.mp4 \
   -c:v mpsoc_vcu_h264 -c:a copy \
