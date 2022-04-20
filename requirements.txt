@@ -1,8 +1,0 @@
-tensorflow
-tqdm
-Pillow
-opencv-python
-ffmpeg
-pyyaml
-matplotlib
-screeninfo
