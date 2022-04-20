@@ -16,8 +16,9 @@ case ${TASK} in
 
     # 1. extract frames from video considering scene changes (0.25 means that have more than 25% of changes compared to previous)
     echo "1. Extract frames from video considering scene changes."
-    ffmpeg -i ${VIDEO_FILE} -vf "select='gt(scene,0.25)'" -vsync vfr "${FRAME_DIR}frame%5d.jpg"
-    python3 src/display_image.py --path="${FRAME_DIR}"
+    time ffmpeg -hide_banner -y -i ${VIDEO_FILE} -vf "select='gt(scene,0.25)'" -vsync vfr "${FRAME_DIR}frame%5d.png"
+    # python3 src/display_image.py --path="${FRAME_DIR}"
+    # or ls -alh
 
     # 2. apply Custom SR(Super Resolution) and convert images.
     echo "2. Apply SR(Super Resolution) and Convert."
@@ -28,21 +29,32 @@ case ${TASK} in
     fi
     mkdir ${SR_FRAME_DIR}
 
+    NEW_FRAME_DIR_PREFIX='data/new_frame'
+    NEW_RESOL=('640:360' '1280:720' '1920:1080')
+    NEW_FRAME_DIR_POSTFIX=()
+    NEW_FRAME_DIR=()
+    for r in ${NEW_RESOL[@]}
+    do
+      TMP=(`echo ${r} | tr ":" "x" `)
+      NEW_FRAME_DIR_POSTFIX+=(${TMP})
+      NEW_FRAME_DIR+=("${NEW_FRAME_DIR_PREFIX}_${TMP}")
+      if [ -d "${NEW_FRAME_DIR_PREFIX}_${TMP}" ]
+      then
+        rm -rf "${NEW_FRAME_DIR_PREFIX}_${TMP}"
+      fi
+      mkdir "${NEW_FRAME_DIR_PREFIX}_${TMP}"
+    done
 
-    ffmpeg -i data/frame/frame00001.jpg -i data/frame/frame00002.jpg -filter_complex vstack data/img_sr_result.jpg
-#    ffmpeg -i frame00001.jpg -filter_complex "multiscale_xma=outputs=4: \
-#      out_1_width=1280: out_1_height=720:  out_1_rate=full: \
-#      out_2_width=848:  out_2_height=480:  out_2_rate=half: \
-#      out_3_width=640:  out_3_height=360:  out_3_rate=half: \
-#      out_4_width=288:  out_4_height=160:  out_4_rate=half  \
-#      [a][b][c][d]; [a]split[aa][ab]; [ab]fps=30[abb]; \
-#      [aa]xvbm_convert[aa1];[abb]xvbm_convert[abb1];[b]xvbm_convert[b1];[c]xvbm_convert[c1]; \
-#      [d]xvbm_convert[d1]" \
-#      -map "[aa1]"  -pix_fmt yuv420p -f rawvideo xil_dec_scale_720p60.png \
-#      -map "[abb1]" -pix_fmt yuv420p -f rawvideo xil_dec_scale_720p30.jpeg \
-#      -map "[b1]"   -pix_fmt yuv420p -f rawvideo xil_dec_scale_480p30.jpg \
-#      -map "[c1]"   -pix_fmt yuv420p -f rawvideo xil_dec_scale_360p30.gif \
-#      -map "[d1]"   -pix_fmt yuv420p -f rawvideo xil_dec_scale_288p30.png
+    for i in ${FRAME_DIR}*
+    do
+      FRAME_NAME=(`echo ${i} | cut -d "/" -f3 | cut -d "." -f1 `)
+      echo ${FRAME_NAME}
+      time ffmpeg -hide_banner -loglevel error -y -i ${i} -filter_complex "split=3[d][u1][u2]; [d]scale=${NEW_RESOL[0]}[d_s]; [u1]scale=${NEW_RESOL[1]}[u1_s]; [u2]scale=${NEW_RESOL[2]}[u2_s]" \
+        -map "[d_s]" "${NEW_FRAME_DIR[0]}/${FRAME_NAME}_${NEW_FRAME_DIR_POSTFIX[0]}.jpg" \
+        -map "[u1_s]" "${NEW_FRAME_DIR[1]}/${FRAME_NAME}_${NEW_FRAME_DIR_POSTFIX[1]}.jpg" \
+        -map "[u2_s]" "${NEW_FRAME_DIR[2]}/${FRAME_NAME}_${NEW_FRAME_DIR_POSTFIX[2]}.jpg"
+    done
+
     ;;
 
   video)
