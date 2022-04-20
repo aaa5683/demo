@@ -20,7 +20,7 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
   echo
   echo "= Create non_sr container"
   docker run --privileged -itd --rm --name non_sr \
-    -v ${PWD}/upscale.sh:/app/upscale.sh \
+    -v ${PWD}/demo/upscale.sh:/app/upscale.sh \
     -v ${PWD}/input:/app/input \
     -v ${PWD}/output_sr:/app/output_sr \
     -v ${PWD}/cred.json:/app/cred.json \
@@ -31,8 +31,8 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
   echo
   echo "= Create sr container"
   docker run --privileged -itd --rm --name sr \
-    -v ${PWD}/upscale_with_sr.sh:/app/upscale_with_sr.sh \
-    -v ${PWD}/stack.sh:/app/stack.sh \
+    -v ${PWD}/demo/upscale_with_sr.sh:/app/upscale_with_sr.sh \
+    -v ${PWD}/demo/stack.sh:/app/stack.sh \
     -v ${PWD}/input:/app/input \
     -v ${PWD}/output_sr:/app/output_sr \
     -v ${PWD}/cred.json:/app/cred.json \
