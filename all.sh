@@ -10,13 +10,15 @@ STACK_FLAG=$4
 cd /home/bm100/sr-test
 
 if [[ ${SETTING_FLAG} == '1' ]]; then
-  echo "remove containers below"
+  echo
+  echo "= Remove containers below"
   docker stop non_sr
   docker stop sr
 
   echo
 
-  echo "create non_sr container"
+  echo
+  echo "= Create non_sr container"
   docker run --privileged -itd --rm --name non_sr \
     -v ${PWD}/upscale.sh:/app/upscale.sh \
     -v ${PWD}/input:/app/input \
@@ -26,7 +28,8 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
 
   echo
 
-  echo "create sr container"
+  echo
+  echo "= Create sr container"
   docker run --privileged -itd --rm --name sr \
     -v ${PWD}/upscale_with_sr.sh:/app/upscale_with_sr.sh \
     -v ${PWD}/stack.sh:/app/stack.sh \
@@ -36,7 +39,8 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
     --device=/dev/xclmgmt24065:/dev/xclmgmt24065 --device=/dev/dri/renderD128:/dev/dri/renderD128 sr-ubuntu
 fi
 
-echo "show container list"
+echo
+echo "= Show container list"
 docker ps
 
 if [[ ${NON_SR_FLAG} == '1' ]]; then
