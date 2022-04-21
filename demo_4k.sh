@@ -91,7 +91,7 @@ if [[ ${NON_SR_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -c:v h264 -c:a copy -filter_complex "scale=w=iw*${TIMES}:h=ih*${TIMES}" "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -y
+  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -c:a copy -filter_complex "scale=w=iw*${TIMES}:h=ih*${TIMES}" "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -y
 fi
 
 echo
