@@ -87,10 +87,11 @@ docker ps
 if [[ ${NON_SR_FLAG} == '1' ]]; then
   echo
   echo "> Upscale 4k without sr on non_sr container"
+  TIMES=$(get_times_for_4k ${INPUT_RESOL})
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -filter_complex "scale=w=iw*${TIMES}:h=ih*${TIMES}" "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -y
+  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -c:v h264 -c:a copy -filter_complex "scale=w=iw*${TIMES}:h=ih*${TIMES}" "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -y
 fi
 
 echo
