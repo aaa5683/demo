@@ -22,7 +22,11 @@ get_times_for_4k() {
 INPUT_FILE=$1
 INPUT_RESOL=$2
 OUTPUT_DIR=$3
-OUTPUT_FILE=
+OUTPUT_FILE_NAME=${INPUT_FILE//\// }
+OUTPUT_FILE_NAME=(${OUTPUT_FILE_NAME//.mp4/ })
+SR_OUTPUT_FILE_NAME="${OUTPUT_FILE[${#OUTPUT_FILE[@]}-1]}_4k_sr.mp4"
+NON_SR_OUTPUT_FILE_NAME="${OUTPUT_FILE[${#OUTPUT_FILE[@]}-1]}_4k.mp4"
+STACK_OUTPUT_FILE_NAME="${OUTPUT_FILE[${#OUTPUT_FILE[@]}-1]}_4k_hstack.mp4"
 SETTING_FLAG=$4
 NON_SR_FLAG=$5
 SR_FLAG=$6
@@ -86,7 +90,7 @@ if [[ ${NON_SR_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -filter_complex "scale=w=iw*${TIMES}:h=ih*${TIMES}" "${OUTPUT_DIR}/iu_4k.mp4" -y
+  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -filter_complex "scale=w=iw*${TIMES}:h=ih*${TIMES}" "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -y
 fi
 
 echo
@@ -98,7 +102,7 @@ if [[ ${SR_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  time docker exec -it sr bash /app/upscale_with_sr.sh -i ${INPUT_FILE} -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale_startrek=w=iw*${TIMES}:h=ih*${TIMES}:fpga=alveo:c=1" "${OUTPUT_DIR}/iu_4k_sr.mp4" -y
+  time docker exec -it sr bash /app/upscale_with_sr.sh -i ${INPUT_FILE} -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale_startrek=w=iw*${TIMES}:h=ih*${TIMES}:fpga=alveo:c=1" "${OUTPUT_DIR}/${SR_OUTPUT_FILE_NAME}" -y
 fi
 
 if [[ ${STACK_FLAG} == '1' ]]; then
@@ -107,5 +111,5 @@ if [[ ${STACK_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  time docker exec -it sr /app/stack.sh -hide_banner -i "${OUTPUT_DIR}/iu_4k.mp4" -i "${OUTPUT_DIR}/iu_4k_sr.mp4" -filter_complex hstack -y "${OUTPUT_DIR}/iu_4k_hstack.mp4"
+  time docker exec -it sr /app/stack.sh -hide_banner -i "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -i "${OUTPUT_DIR}/${SR_OUTPUT_FILE_NAME}" -filter_complex hstack -y "${OUTPUT_DIR}/${STACK_OUTPUT_FILE_NAME}"
 fi
