@@ -1,12 +1,11 @@
 #!/bin/bash
 
-INPUT_FILE="input/iu.mp4"
-OUTPUT_DIR="output_sr"
-SETTING_FLAG=$1
-NON_SR_FLAG=$2
-SR_FLAG=$3
-STACK_FLAG=$4
-ENTER_FLAG=$5
+INPUT_FILE=$1 #"input/iu.mp4"
+OUTPUT_DIR=$2 #"output_tr"
+OUTPUT_FILE_PREFIX_NAME=${INPUT_FILE//\// }
+OUTPUT_FILE_PREFIX_NAME=(${OUTPUT_FILE_PREFIX_NAME//.mp4/ })
+OUTPUT_FILE_PREFIX_NAME="${OUTPUT_FILE_PREFIX_NAME[${#OUTPUT_FILE_PREFIX_NAME[@]}-1]}_tr"
+ENTER_FLAG=$3
 if [[ ${ENTER_FLAG} == '' ]]
 then
   ENTER_FLAG=0
@@ -14,76 +13,24 @@ else
   ENTER_FLAG=1
 fi
 
-cd /home/bm100/sr-test
+cd /home/ubuntu/demo
+rm -rf ${OUTPUT_DIR}
+mkdir ${OUTPUT_DIR}
 
-if [[ ${SETTING_FLAG} == '1' ]]; then
-  echo
-  echo "> Remove containers below"
-  if [[ ${ENTER_FLAG} == '1' ]]; then
-    read ENTER
-  fi
-  docker stop non_sr
-  docker stop sr
-
-  echo
-
-  echo
-  echo "> Create non_sr container"
-  if [[ ${ENTER_FLAG} == '1' ]]; then
-    read ENTER
-  fi
-  docker run --privileged -itd --rm --name non_sr \
-    -v ${PWD}/demo/upscale.sh:/app/upscale.sh \
-    -v ${PWD}/input:/app/input \
-    -v ${PWD}/output_sr:/app/output_sr \
-    -v ${PWD}/cred.json:/app/cred.json \
-    --device=/dev/xclmgmt24065:/dev/xclmgmt24065 --device=/dev/dri/renderD128:/dev/dri/renderD128 sr-ubuntu
-
-  echo
-
-  echo
-  echo "> Create sr container"
-  if [[ ${ENTER_FLAG} == '1' ]]; then
-    read ENTER
-  fi
-  docker run --privileged -itd --rm --name sr \
-    -v ${PWD}/demo/upscale_with_sr.sh:/app/upscale_with_sr.sh \
-    -v ${PWD}/demo/stack.sh:/app/stack.sh \
-    -v ${PWD}/input:/app/input \
-    -v ${PWD}/output_sr:/app/output_sr \
-    -v ${PWD}/cred.json:/app/cred.json \
-    --device=/dev/xclmgmt24065:/dev/xclmgmt24065 --device=/dev/dri/renderD128:/dev/dri/renderD128 sr-ubuntu
-fi
+mkdir out
 
 echo
-echo "> Show container list"
-docker ps
-
-if [[ ${NON_SR_FLAG} == '1' ]]; then
-  echo
-  echo "> Upscale 4k without sr on non_sr container"
-  if [[ ${ENTER_FLAG} == '1' ]]; then
-    read ENTER
-  fi
-  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -filter_complex "scale=w=iw*6:h=ih*6" "${OUTPUT_DIR}/iu_4k.mp4" -y
+echo "> Transcode & multiscaling with libx264"
+if [[ ${ENTER_FLAG} == '1' ]]; then
+  read ENTER
 fi
+time ffmpeg -hide_banner -i ${INPUT_FILE} \
+  -filter_complex "split=4[a][b][c][d]" \
+  -map "[a]" -s 1280x720 -c:v libx264 -c:a copy -r 60 -b:v 4M -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p60.mp4" \
+  -map "[b]" -s 1280x720 -c:v libx264 -c:a copy -r 30 -b:v 3M -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p30.mp4" \
+  -map "[c]" -s 848x480 -c:v libx264 -c:a copy -r 30 -b:v 2500K -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_480p30.mp4" \
+  -map "[d]" -s 288x160 -c:v libx264 -c:a copy -r 30 -b:v 625k -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_288p30.mp4"
 
 echo
 
-if [[ ${SR_FLAG} == '1' ]]; then
-  echo
-  echo "> Upscale 4k with sr on sr container"
-  if [[ ${ENTER_FLAG} == '1' ]]; then
-    read ENTER
-  fi
-  time docker exec -it sr bash /app/upscale_with_sr.sh -i ${INPUT_FILE} -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale_startrek=w=iw*6:h=ih*6:fpga=alveo:c=1" "${OUTPUT_DIR}/iu_4k_sr.mp4" -y
-fi
-
-if [[ ${STACK_FLAG} == '1' ]]; then
-  echo
-  echo "> Stack 2 videos"
-  if [[ ${ENTER_FLAG} == '1' ]]; then
-    read ENTER
-  fi
-  time docker exec -it sr /app/stack.sh -hide_banner -i "${OUTPUT_DIR}/iu_4k.mp4" -i "${OUTPUT_DIR}/iu_4k_sr.mp4" -filter_complex hstack -y "${OUTPUT_DIR}/iu_4k_hstack.mp4"
-fi
+ls -alht "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_*"
