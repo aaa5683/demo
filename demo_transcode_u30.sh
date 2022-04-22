@@ -18,6 +18,8 @@ else
 fi
 
 cd /home/bm100/sr-test
+rm -rf ${OUTPUT_DIR}
+mkdir ${OUTPUT_DIR}
 
 if [[ ${SETTING_FLAG} == '1' ]]; then
   echo
@@ -56,17 +58,17 @@ if [[ ${TR_FLAG} == '1' ]]; then
     read ENTER
   fi
   time docker exec -it tr bash /app/run.sh -hide_banner -c:v mpsoc_vcu_h264 -i ${INPUT_FILE} \
-    -filter_complex "multiscale_xma=outputs=3: \
+    -filter_complex '"multiscale_xma=outputs=3: \
     out_1_width=1280: out_1_height=720: out_1_rate=full: \
     out_2_width=848:  out_2_height=480: out_2_rate=half: \
     out_3_width=288:  out_3_height=160: out_3_rate=half \
-    [a][b][c]; [a]split[aa][ab];[ab]fps=30[abb]" \
-    -map "[aa]"  -b:v 4M    -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y output_sr/iu_ms_720p60.mp4 \
-    -map "[abb]" -b:v 3M    -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y output_sr/iu_ms_720p30.mp4 \
-    -map "[b]"   -b:v 2500K -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y output_sr/iu_ms_480p30.mp4 \
-    -map "[c]"   -b:v 625K  -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y output_sr/iu_ms_288p30.mp4
+    [a][b][c]; [a]split[aa][ab];[ab]fps=30[abb]"' \
+    -map '"[aa]"'  -b:v 4M    -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p60.mp4" \
+    -map '"[abb]"' -b:v 3M    -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p30.mp4" \
+    -map '"[b]"'   -b:v 2500K -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_480p30.mp4" \
+    -map '"[c]"'   -b:v 625K  -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_288p30.mp4"
 
     echo
 
-    ls -alht "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_*"
+    ls -alht "${OUTPUT_DIR}"
 fi
