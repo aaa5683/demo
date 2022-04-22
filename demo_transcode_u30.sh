@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# bash demo_transcode_u30.sh /app/input/iu.mp4 /app/output_sr 1 1 1
+
 INPUT_FILE=$1 #"input/iu.mp4"
 OUTPUT_DIR=$2 #"output_sr"
 OUTPUT_FILE_PREFIX_NAME=${INPUT_FILE//\// }
@@ -56,8 +58,8 @@ if [[ ${TR_FLAG} == '1' ]]; then
   time docker exec -it tr bash /app/run.sh -hide_banner -c:v mpsoc_vcu_h264 -i ${INPUT_FILE} \
     -filter_complex "multiscale_xma=outputs=3: \
     out_1_width=1280: out_1_height=720: out_1_rate=full: \
-    out_2_width=848: out_2_height=480: out_2_rate=half: \
-    out_3_width=288: out_3_height=160: out_3_rate=half \
+    out_2_width=848:  out_2_height=480: out_2_rate=half: \
+    out_3_width=288:  out_3_height=160: out_3_rate=half \
     [a][b][c]; [a]split[aa][ab];[ab]fps=30[abb]" \
     -map "[aa]"  -b:v 4M    -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y output_sr/iu_ms_720p60.mp4 \
     -map "[abb]" -b:v 3M    -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y output_sr/iu_ms_720p30.mp4 \

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# bash demo_transcode.sh /app/input/iu.mp4 /app/output_sr 1
+
 INPUT_FILE=$1 #"input/iu.mp4"
 OUTPUT_DIR=$2 #"output_tr"
 OUTPUT_FILE_PREFIX_NAME=${INPUT_FILE//\// }
