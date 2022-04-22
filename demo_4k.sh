@@ -91,7 +91,8 @@ if [[ ${NON_SR_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -c:a copy -filter_complex "scale=w=iw*${TIMES}:h=ih*${TIMES}" "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -y
+  time docker exec -it non_sr bash /app/upscale.sh -i ${INPUT_FILE} -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale=w=iw*${TIMES}:h=ih*${TIMES}" "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -y
+  # real : 2m25s
 fi
 
 echo
@@ -104,7 +105,10 @@ if [[ ${SR_FLAG} == '1' ]]; then
     read ENTER
   fi
   time docker exec -it sr bash /app/upscale_with_sr.sh -i ${INPUT_FILE} -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale_startrek=w=iw*${TIMES}:h=ih*${TIMES}:fpga=alveo:c=1" "${OUTPUT_DIR}/${SR_OUTPUT_FILE_NAME}" -y
+  # real : 4m28s
 fi
+
+echo
 
 if [[ ${STACK_FLAG} == '1' ]]; then
   echo

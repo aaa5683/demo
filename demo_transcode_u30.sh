@@ -18,8 +18,6 @@ else
 fi
 
 cd /home/bm100/sr-test
-rm -rf ${OUTPUT_DIR}
-mkdir ${OUTPUT_DIR}
 
 if [[ ${SETTING_FLAG} == '1' ]]; then
   echo
