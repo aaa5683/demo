@@ -3,7 +3,7 @@
 # bash demo_transcode_u30.sh /app/input/iu.mp4 /app/output_tr 1 1 1
 
 INPUT_FILE=$1 #"input/iu.mp4"
-OUTPUT_DIR=$2 #"output_sr"
+OUTPUT_DIR=$2 #"output_tr"
 OUTPUT_FILE_PREFIX_NAME=${INPUT_FILE//\// }
 OUTPUT_FILE_PREFIX_NAME=(${OUTPUT_FILE_PREFIX_NAME//.mp4/ })
 OUTPUT_FILE_PREFIX_NAME="${OUTPUT_FILE_PREFIX_NAME[${#OUTPUT_FILE_PREFIX_NAME[@]}-1]}_tr"
@@ -17,7 +17,7 @@ else
   ENTER_FLAG=1
 fi
 
-cd /home/ubuntu/demo
+cd /home/bm100/sr-test
 
 if [[ ${SETTING_FLAG} == '1' ]]; then
   echo
