@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash demo_transcode.sh /app/input/iu.mp4 /app/output_sr 1
+# bash demo_transcode.sh input/iu.mp4 output_sr 1
 
 INPUT_FILE=$1 #"input/iu.mp4"
 OUTPUT_DIR=$2 #"output_tr"
@@ -18,8 +18,6 @@ fi
 cd /home/ubuntu/demo
 rm -rf ${OUTPUT_DIR}
 mkdir ${OUTPUT_DIR}
-
-mkdir out
 
 echo
 echo "> Transcode & multiscaling with libx264"
