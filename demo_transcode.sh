@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash demo_transcode.sh input/iu.mp4 output_sr 1
+# bash demo_transcode.sh input/iu.mp4 output_tr 1
 
 INPUT_FILE=$1 #"input/iu.mp4"
 OUTPUT_DIR=$2 #"output_tr"
@@ -33,4 +33,4 @@ time ffmpeg -hide_banner -i ${INPUT_FILE} \
 
 echo
 
-ls -alht "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_*"
+ls -alht "${OUTPUT_DIR}"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash demo_transcode_u30.sh /app/input/iu.mp4 /app/output_sr 1 1 1
+# bash demo_transcode_u30.sh /app/input/iu.mp4 /app/output_tr 1 1 1
 
 INPUT_FILE=$1 #"input/iu.mp4"
 OUTPUT_DIR=$2 #"output_sr"
