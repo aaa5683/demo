@@ -39,7 +39,7 @@ else
   ENTER_FLAG=1
 fi
 
-cd /home/bm100/sr-test
+cd /home/ubuntu/sr-test
 
 if [[ ${SETTING_FLAG} == '1' ]]; then
   echo
@@ -60,10 +60,10 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
     -v ${PWD}/demo/upscale.sh:/app/upscale.sh \
     -v ${PWD}/demo/upscale_with_sr.sh:/app/upscale_with_sr.sh \
     -v ${PWD}/demo/stack.sh:/app/stack.sh \
-    -v ${PWD}/input:/app/input \
-    -v ${PWD}/output_sr:/app/output_sr \
+    -v ${PWD}/demo/input:/app/input \
+    -v ${PWD}/demo/output_sr:/app/output_sr \
     -v ${PWD}/cred.json:/app/cred.json \
-    --device=/dev/xclmgmt24065:/dev/xclmgmt24065 --device=/dev/dri/renderD128:/dev/dri/renderD128 sr-ubuntu
+    --device=/dev/xclmgmt49408:/dev/xclmgmt49408 --device=/dev/dri/renderD128:/dev/dri/renderD128 sr-new
 
   echo
 

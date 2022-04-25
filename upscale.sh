@@ -4,6 +4,10 @@
 
 echo "= start upscaling."
 
+echo "= activating drm."
+
+./drm_man --conf=conf.json --cred=cred.json
+
 source /opt/xilinx/xcdr/setup.sh
 
 FFMPEG_ARGS=$@
@@ -17,7 +21,7 @@ do
 done
 FFMPEG_ARGS=${ARR[@]}
 
-cmd="/app/ffmpeg -hide_banner -y ${FFMPEG_ARGS}"
+cmd="/app/ffmpeg_nou30 -hide_banner -y ${FFMPEG_ARGS}"
 echo "= COMMAND ${cmd}"
 eval $cmd
 echo "= finish."
