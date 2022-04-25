@@ -21,7 +21,8 @@ do
 done
 FFMPEG_ARGS=${ARR[@]}
 
-cmd="/app/ffmpeg_nou30 -hide_banner -y ${FFMPEG_ARGS}"
+cmd="/app/ffmpeg -hide_banner -y ${FFMPEG_ARGS}"
+cmd="/app/ffmpeg -hide_banner -y ${FFMPEG_ARGS}"
 echo "= COMMAND ${cmd}"
 eval $cmd
 
