@@ -61,7 +61,7 @@ if [[ ${TR_FLAG} == '1' ]]; then
   fi
 
   echo
-  time docker exec  -it demo bash /app/transcode.sh ${INPUT_FILE} ${OUTPUT_DIR} ${OUTPUT_FILE_PREFIX_NAME}
+  time docker exec -it demo bash /app/transcode.sh ${INPUT_FILE} ${OUTPUT_DIR} ${OUTPUT_FILE_PREFIX_NAME}
 
 fi
 
