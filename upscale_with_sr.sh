@@ -24,6 +24,7 @@ FFMPEG_ARGS=${ARR[@]}
 cmd="/app/ffmpeg -hide_banner -y ${FFMPEG_ARGS}"
 cmd="/app/ffmpeg -hide_banner -y ${FFMPEG_ARGS}"
 echo "= COMMAND ${cmd}"
+read ENTER
 eval $cmd
 
 killall drm_man
