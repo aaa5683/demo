@@ -29,8 +29,6 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
   docker stop demo
 
   echo
-
-  echo
   echo "> Create transcode container"
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
@@ -43,8 +41,6 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
     -v ${PWD}/output:/app/output \
     -v ${PWD}/cred.json:/app/cred.json \
     --device=/dev/xclmgmt49408:/dev/xclmgmt49408 --device=/dev/dri/renderD128:/dev/dri/renderD128 sr-new
-
-  echo
 
 fi
 
@@ -65,8 +61,6 @@ if [[ ${TR_FLAG} == '1' ]]; then
 
 fi
 
-echo
-
 if [[ ${TR_U30_FLAG} == '1' ]]; then
   echo
   echo "> Transcode & Multiscale with U30"
@@ -81,3 +75,5 @@ fi
 
 echo
 echo "> Finish all"
+
+echo

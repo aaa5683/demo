@@ -41,8 +41,12 @@ echo -e "= COMMAND \n\t>  ${cmd_pretty}"
 eval $cmd
 
 killall drm_man
-echo "deactivating drm"
 echo
+echo "= deactivating drm"
 
-echo "= finish."
-sleep 1
+echo
+echo "= results below ->"
+ls -alht ${OUTPUT_DIR}
+
+echo
+echo "= finish"
