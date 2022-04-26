@@ -30,13 +30,13 @@ cmd_arr=(${cmd})
 for i in ${!cmd_arr[@]}
 do
   if [ ${cmd_arr[${i}]} == "-filter_complex" ] || [ ${cmd_arr[${i}]} == "-map" ]; then
-    cmd_arr[${i}]="\n\t\t\t${cmd_arr[${i}]}"
+    cmd_arr[${i}]="\n\t\t${cmd_arr[${i}]}"
   fi
 done
 cmd_pretty=${cmd_arr[@]}
 
 echo
-echo -e "= COMMAND \n\t>  ${cmd_pretty}"
+echo -e "= COMMAND \n>  ${cmd_pretty}"
 eval $cmd
 
 killall drm_man
@@ -45,7 +45,7 @@ echo "= deactivating drm"
 
 echo
 echo "= results below ->"
-ls -alht ${OUTPUT_DIR}
+ls -lht ${OUTPUT_DIR}
 
 echo
 echo "= finish"
