@@ -35,8 +35,17 @@ out_3_width=288:  out_3_height=160: out_3_rate=half \
 
 cmd="ffmpeg -hide_banner ${FFMPEG_ARGS}"
 
+cmd_arr=(${cmd})
+for i in ${!cmd_arr[@]}
+do
+  if [ ${cmd_arr[${i}]} == "-filter_complex" ] || [ ${cmd_arr[${i}]} == "-map" ] || [ ${cmd_arr[${i}]} == "out_1_width=1280:" ] || [ ${cmd_arr[${i}]} == "out_2_width=848:" ] || [ ${cmd_arr[${i}]} == "out_3_width=288:" ]; then
+    cmd_arr[${i}]="\n\t\t ${cmd_arr[${i}]}"
+  fi
+done
+cmd_pretty=${cmd_arr[@]}
+
 echo
-echo "= COMMAND ${cmd}"
+echo -e "= COMMAND \n\t> ${cmd_pretty}"
 eval $cmd
 
 killall drm_man

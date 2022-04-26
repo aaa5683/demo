@@ -27,8 +27,17 @@ FFMPEG_ARGS="-i ${INPUT_FILE} \
 
 cmd="ffmpeg_nou30 -hide_banner ${FFMPEG_ARGS}"
 
+cmd_arr=(${cmd})
+for i in ${!cmd_arr[@]}
+do
+  if [ ${cmd_arr[${i}]} == "-filter_complex" ] || [ ${cmd_arr[${i}]} == "-map" ]; then
+    cmd_arr[${i}]="\n\t\t\t${cmd_arr[${i}]}"
+  fi
+done
+cmd_pretty=${cmd_arr[@]}
+
 echo
-echo "= COMMAND ${cmd}"
+echo -e "= COMMAND \n\t>  ${cmd_pretty}"
 eval $cmd
 
 killall drm_man

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# bash demo_transcode_all.sh /app/input/iu.mp4 /app/output 1 1 1 1
+# bash demo_transcode_multiscale.sh /app/input/iu.mp4 /app/output 1 1 1 1
 
 INPUT_FILE=$1 #"input/iu.mp4"
 OUTPUT_DIR=$2 #"output"
@@ -36,7 +36,7 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
     read ENTER
   fi
   docker run --privileged -itd --rm --name demo \
-    -v ${PWD}/demo_transcode_all.sh:/app/demo_transcode_all.sh \
+    -v ${PWD}/demo_transcode_multiscale.sh:/app/demo_transcode_multiscale.sh \
     -v ${PWD}/transcode.sh:/app/transcode.sh \
     -v ${PWD}/transcode_u30.sh:/app/transcode_u30.sh \
     -v ${PWD}/input:/app/input \
