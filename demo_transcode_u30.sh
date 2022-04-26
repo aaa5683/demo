@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# bash demo_transcode_u30.sh /app/input/iu.mp4 /app/output_tr 1 1 1
+# bash demo_transcode_u30.sh /app/input/iu.mp4 /app/output 1 1 1
 
 INPUT_FILE=$1 #"input/iu.mp4"
-OUTPUT_DIR=$2 #"output_tr"
+OUTPUT_DIR=$2 #"output"
 OUTPUT_FILE_PREFIX_NAME=${INPUT_FILE//\// }
 OUTPUT_FILE_PREFIX_NAME=(${OUTPUT_FILE_PREFIX_NAME//.mp4/ })
 OUTPUT_FILE_PREFIX_NAME="${OUTPUT_FILE_PREFIX_NAME[${#OUTPUT_FILE_PREFIX_NAME[@]}-1]}_tr"
@@ -17,7 +17,7 @@ else
   ENTER_FLAG=1
 fi
 
-cd /home/bm100/sr-test
+cd /home/ubuntu/demo
 
 if [[ ${SETTING_FLAG} == '1' ]]; then
   echo
@@ -25,7 +25,7 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  docker stop tr
+  docker stop demo
 
   echo
 
@@ -34,12 +34,13 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  docker run --privileged -itd --rm --name tr \
+  docker run --privileged -itd --rm --name demo \
+    -v ${PWD}/demo/upscale.sh:/app/demo_transcode.sh \
     -v ${PWD}/demo/upscale.sh:/app/demo_transcode_u30.sh \
     -v ${PWD}/input:/app/input \
-    -v ${PWD}/output_sr:/app/output_tr \
+    -v ${PWD}/output:/app/output \
     -v ${PWD}/cred.json:/app/cred.json \
-    --device=/dev/xclmgmt24065:/dev/xclmgmt24065 --device=/dev/dri/renderD128:/dev/dri/renderD128 sr-ubuntu
+    --device=/dev/xclmgmt49408:/dev/xclmgmt49408 --device=/dev/dri/renderD128:/dev/dri/renderD128 sr-new
 
   echo
 
@@ -55,7 +56,7 @@ if [[ ${TR_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  time docker exec -it tr bash /app/run.sh -hide_banner -c:v mpsoc_vcu_h264 -i ${INPUT_FILE} \
+  time docker exec -it demo bash /app/run.sh -hide_banner -c:v mpsoc_vcu_h264 -i ${INPUT_FILE} \
     -filter_complex '"multiscale_xma=outputs=3: \
     out_1_width=1280: out_1_height=720: out_1_rate=full: \
     out_2_width=848:  out_2_height=480: out_2_rate=half: \
