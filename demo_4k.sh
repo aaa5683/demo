@@ -17,7 +17,7 @@ get_times_for_4k() {
   echo ${times}
 }
 
-# bash demo_4k.sh /app/input/iu.mp4 640x360 /app/output_sr 1 1 1 1 1
+# bash demo_4k.sh /app/input/iu.mp4 640x360 /app/output 1 1 1 0 1
 
 INPUT_FILE=$1
 INPUT_RESOL=$2
@@ -47,7 +47,7 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  docker stop demo-sr
+  docker stop demo
 
   echo
 
@@ -56,12 +56,12 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  docker run --privileged -itd --rm --name demo-sr \
+  docker run --privileged -itd --rm --name demo \
     -v ${PWD}/upscale.sh:/app/upscale.sh \
     -v ${PWD}/upscale_with_sr.sh:/app/upscale_with_sr.sh \
     -v ${PWD}/stack.sh:/app/stack.sh \
     -v ${PWD}/input:/app/input \
-    -v ${PWD}/output_sr:/app/output_sr \
+    -v ${PWD}/output:/app/output \
     -v ${PWD}/cred.json:/app/cred.json \
     --device=/dev/xclmgmt49408:/dev/xclmgmt49408 --device=/dev/dri/renderD128:/dev/dri/renderD128 sr-new
 
@@ -80,7 +80,7 @@ if [[ ${NON_SR_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  time docker exec -it demo-sr bash /app/upscale.sh -i ${INPUT_FILE} -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale=w=iw*${TIMES}:h=ih*${TIMES}" "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -y
+  time docker exec -it demo bash /app/upscale.sh -i ${INPUT_FILE} -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale=w=iw*${TIMES}:h=ih*${TIMES}" "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -y
   # real : 2m25s
 fi
 
@@ -93,7 +93,7 @@ if [[ ${SR_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  time docker exec -it demo-sr bash /app/upscale_with_sr.sh -i ${INPUT_FILE} -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale_startrek=w=iw*${TIMES}:h=ih*${TIMES}:fpga=alveo:c=1" "${OUTPUT_DIR}/${SR_OUTPUT_FILE_NAME}" -y
+  time docker exec -it demo bash /app/upscale_with_sr.sh -i ${INPUT_FILE} -c:v mpsoc_vcu_h264 -c:a copy -filter_complex "scale_startrek=w=iw*${TIMES}:h=ih*${TIMES}:fpga=alveo:c=1" "${OUTPUT_DIR}/${SR_OUTPUT_FILE_NAME}" -y
   # real : 4m28s
 fi
 
@@ -105,5 +105,5 @@ if [[ ${STACK_FLAG} == '1' ]]; then
   if [[ ${ENTER_FLAG} == '1' ]]; then
     read ENTER
   fi
-  time docker exec -it demo-sr /app/stack.sh -hide_banner -i "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -i "${OUTPUT_DIR}/${SR_OUTPUT_FILE_NAME}" -filter_complex hstack -y "${OUTPUT_DIR}/${STACK_OUTPUT_FILE_NAME}"
+  time docker exec -it demo /app/stack.sh -hide_banner -i "${OUTPUT_DIR}/${NON_SR_OUTPUT_FILE_NAME}" -i "${OUTPUT_DIR}/${SR_OUTPUT_FILE_NAME}" -filter_complex hstack -y "${OUTPUT_DIR}/${STACK_OUTPUT_FILE_NAME}"
 fi
