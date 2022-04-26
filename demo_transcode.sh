@@ -60,12 +60,12 @@ if [[ ${TR_FLAG} == '1' ]]; then
   echo
   echo "= activating drm."
 
-  ./drm_man --conf=conf.json --cred=cred.json
+  docker exec -it demo ./drm_man --conf=conf.json --cred=cred.json
 
-  source /opt/xilinx/xcdr/setup.sh
+  docker exec -it demo source /opt/xilinx/xcdr/setup.sh
 
   echo
-  time ffmpeg_nou30 -hide_banner -i ${INPUT_FILE} \
+  time docker exec -it demo ffmpeg_nou30 -hide_banner -i ${INPUT_FILE} \
     -filter_complex '"split=4[a][b][c][d]"' \
     -map '"[a]"' -s 1280x720 -c:v libx264 -c:a copy -r 60 -b:v 4M -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p60.mp4" \
     -map '"[b]"' -s 1280x720 -c:v libx264 -c:a copy -r 30 -b:v 3M -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p30.mp4" \
