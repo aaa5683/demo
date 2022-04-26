@@ -76,6 +76,11 @@ if [[ ${TR_FLAG} == '1' ]]; then
     -map "[b]"   -b:v 2500K -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_480p30.mp4" \
     -map "[c]"   -b:v 625K  -c:v mpsoc_vcu_h264 -c:a copy -f mp4 -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_288p30.mp4"
 
-    echo
+  killall drm_man
+  echo "deactivating drm"
+  echo
 
 fi
+
+echo "= finish."
+sleep 3

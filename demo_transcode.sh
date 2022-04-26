@@ -72,6 +72,11 @@ if [[ ${TR_FLAG} == '1' ]]; then
     -map "[c]" -s 848x480 -c:v libx264 -c:a copy -r 30 -b:v 2500K -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_480p30.mp4" \
     -map "[d]" -s 288x160 -c:v libx264 -c:a copy -r 30 -b:v 625k -y "${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_288p30.mp4"
 
+  killall drm_man
+  echo "deactivating drm"
   echo
 
 fi
+
+echo "= finish."
+sleep 3
