@@ -36,9 +36,9 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
     read ENTER
   fi
   docker run --privileged -itd --rm --name demo \
-    -v ${PWD}/demo/demo_transcode_all.sh:/app/demo_transcode_all.sh \
-    -v ${PWD}/demo/transcode.sh:/app/transcode.sh \
-    -v ${PWD}/demo/transcode_u30.sh:/app/transcode_u30.sh \
+    -v ${PWD}/demo_transcode_all.sh:/app/demo_transcode_all.sh \
+    -v ${PWD}/transcode.sh:/app/transcode.sh \
+    -v ${PWD}/transcode_u30.sh:/app/transcode_u30.sh \
     -v ${PWD}/input:/app/input \
     -v ${PWD}/output:/app/output \
     -v ${PWD}/cred.json:/app/cred.json \
