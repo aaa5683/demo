@@ -4,7 +4,6 @@ INPUT_FILE=$1
 OUTPUT_DIR=$2
 OUTPUT_FILE_PREFIX_NAME=$3
 
-echo
 echo "= activating drm."
 
 ./drm_man --conf=conf.json --cred=cred.json
