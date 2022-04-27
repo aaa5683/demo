@@ -4,12 +4,6 @@ INPUT_FILE=$1
 OUTPUT_DIR=$2
 OUTPUT_FILE_PREFIX_NAME=$3
 
-echo "= activating drm."
-
-./drm_man --conf=conf.json --cred=cred.json
-
-source /opt/xilinx/xcdr/setup.sh
-
 FFMPEG_ARGS="-i ${INPUT_FILE} \
 -filter_complex 'split=4[a][b][c][d]' \
 -map '[a]' -s 1280x720 -c:v libx264 -c:a copy -r 60 -b:v 4M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p60.mp4 \
@@ -39,10 +33,6 @@ echo
 echo -e "= COMMAND \n>  ${cmd_pretty}"
 read ENTER
 eval $cmd
-
-killall drm_man
-echo
-echo "= deactivating drm"
 
 echo
 echo "= results below ->"
