@@ -9,8 +9,9 @@ OUTPUT_FILE_PREFIX_NAME=$3
 #-c:v libx264 -c:a copy -r 60 -b:v 1M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_4k.mp4"
 
 FFMPEG_ARGS="-i ${INPUT_FILE} \
--filter_complex 'split=1[a]' \
--map '[a]' -s 1280x720 -c:v libx264 -c:a copy -b:v 1M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p30.mp4"
+-filter_complex 'split=2[a][b]' \
+-map '[a]' -s 1280x720 -c:v libx264 -c:a copy -b:v 1M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p30.mp4 \
+-map '[b]' -s 1920x1080 -c:v libx264 -c:a copy -b:v 1M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1080p30.mp4"
 
 cmd="ffmpeg_nou30 -hide_banner ${FFMPEG_ARGS}"
 
