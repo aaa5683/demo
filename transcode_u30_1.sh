@@ -14,7 +14,7 @@ source /opt/xilinx/xcdr/setup.sh
 #FFMPEG_ARGS="-c:v mpsoc_vcu_h264 -i ${INPUT_FILE} -filter_complex 'multiscale_xma=outputs=1: out_1_width=3840: out_1_height=2160: out_1_rate=full [a]' -map '[a]' -cores 4 -c:v mpsoc_vcu_h264 -c:a aac -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_4k_u30.mp4"
 FFMPEG_ARGS="-i ${INPUT_FILE} \
 -filter_complex 'multiscale_xma=outputs=1: out_1_width=1280: out_1_height=720: out_1_rate=full [a]' \
--map '[a]' -cores 4 -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_720p_30.mp4"
+-map '[a]' -cores 4 -b:v 1M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_720p30.mp4"
 
 cmd="ffmpeg -hide_banner ${FFMPEG_ARGS}"
 
