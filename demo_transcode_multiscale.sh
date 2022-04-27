@@ -24,8 +24,8 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
   read ENTER
   docker run --privileged -itd --rm --name demo \
     -v ${PWD}/demo_transcode_multiscale.sh:/app/demo_transcode_multiscale.sh \
-    -v ${PWD}/transcode.sh:/app/transcode.sh \
-    -v ${PWD}/transcode_u30.sh:/app/transcode_u30.sh \
+    -v ${PWD}/transcode_1.sh:/app/transcode.sh \
+    -v ${PWD}/transcode_u30_1.sh:/app/transcode_u30.sh \
     -v ${PWD}/input:/app/input \
     -v ${PWD}/output:/app/output \
     -v ${PWD}/cred.json:/app/cred.json \
@@ -43,7 +43,7 @@ if [[ ${TR_FLAG} == '1' ]]; then
   echo "> Transcode & multiscaling with libx264"
   read ENTER
 
-  time docker exec -it demo bash /app/transcode.sh ${INPUT_FILE} ${OUTPUT_DIR} ${OUTPUT_FILE_PREFIX_NAME}
+  docker exec -it demo bash /app/transcode.sh ${INPUT_FILE} ${OUTPUT_DIR} ${OUTPUT_FILE_PREFIX_NAME}
 
 fi
 
@@ -52,7 +52,7 @@ if [[ ${TR_U30_FLAG} == '1' ]]; then
   echo "> Transcode & Multiscale with U30"
   read ENTER
 
-  time docker exec -it demo bash /app/transcode_u30.sh ${INPUT_FILE} ${OUTPUT_DIR} ${OUTPUT_FILE_PREFIX_NAME}
+  docker exec -it demo bash /app/transcode_u30.sh ${INPUT_FILE} ${OUTPUT_DIR} ${OUTPUT_FILE_PREFIX_NAME}
 
 fi
 
