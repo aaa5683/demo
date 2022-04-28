@@ -27,11 +27,12 @@ FFMPEG_ARGS="-c:v mpsoc_vcu_h264 -i ${INPUT_FILE} \
 out_1_width=1280: out_1_height=720: out_1_rate=full: \
 out_2_width=1920: out_2_height=1080: out_2_rate=full: \
 out_3_width=2560: out_3_height=1440: out_3_rate=full: \
-out_4_width=3840: out_4_height=2160: out_4_rate=full [a][b][c][d]' \
--map '[a]' -b:v 2.5M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_720p30.mp4 \
--map '[b]' -b:v 4M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_1080p30.mp4 \
--map '[c]' -b:v 8M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_1440p30.mp4 \
--map '[d]' -b:v 10M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_4k30.mp4"
+out_4_width=3840: out_4_height=2160: out_4_rate=full [a][b][c][d]; \
+[a]xvbm_convert[aa];[b]xvbm_convert[bb];[c]xvbm_convert[cc];[d]xvbm_convert[dd]' \
+-map '[aa]' -b:v 2.5M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_720p30.mp4 \
+-map '[bb]' -b:v 4M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_1080p30.mp4 \
+-map '[cc]' -b:v 8M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_1440p30.mp4 \
+-map '[dd]' -b:v 10M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_4k30.mp4"
 
 cmd="time ffmpeg -hide_banner ${FFMPEG_ARGS}"
 
