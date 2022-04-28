@@ -20,10 +20,10 @@ OUTPUT_FILE_PREFIX_NAME=$3
 #-map '[dd]' -c:v libx264 -c:a copy -b:v 10M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_4k30.mp4"
 
 FFMPEG_ARGS="-i ${INPUT_FILE} \
--s 1280x720 -c:v libx264 -c:a copy -b:v 2.5M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p30.mp4 \
--s 1920x1080 -c:v libx264 -c:a copy -b:v 4M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1080p30.mp4 \
--s 2560x1440 -c:v libx264 -c:a copy -b:v 8M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1440p30.mp4 \
--s 3840x2160 -c:v libx264 -c:a copy -b:v 10M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_4k30.mp4"
+-s 1280x720 -c:v libx264 -c:a acc -b:v 2.5M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p30.mp4 \
+-s 1920x1080 -c:v libx264 -c:a acc -b:v 4M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1080p30.mp4 \
+-s 2560x1440 -c:v libx264 -c:a acc -b:v 8M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1440p30.mp4 \
+-s 3840x2160 -c:v libx264 -c:a acc -b:v 10M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_4k30.mp4"
 
 cmd="time ffmpeg_nou30 -hide_banner ${FFMPEG_ARGS}"
 
