@@ -34,6 +34,8 @@ if [[ ${SETTING_FLAG} == '1' ]]; then
     -v ${PWD}/cred.json:/app/cred.json \
     --device=/dev/xclmgmt49408:/dev/xclmgmt49408 --device=/dev/dri/renderD128:/dev/dri/renderD128 sr-new
 
+  docker exec -it demo apt-get install htop
+
 fi
 
 echo
