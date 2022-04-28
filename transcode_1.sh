@@ -13,7 +13,7 @@ FFMPEG_ARGS="-i ${INPUT_FILE} \
 [a]scale=1280x720:flags=lanczos[aa]; \
 [b]scale=1920x1080:flags=lanczos[bb]; \
 [c]scale=2560x1440:flags=lanczos[cc]; \
-[d]scale=3840x2160:flags=lanczos[dd] \
+[d]scale=3840x2160:flags=lanczos[dd]' \
 -map '[aa]' -c:v libx264 -c:a copy -b:v 2.5M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p30.mp4 \
 -map '[bb]' -c:v libx264 -c:a copy -b:v 4M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1080p30.mp4 \
 -map '[cc]' -c:v libx264 -c:a copy -b:v 8M -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1440p30.mp4 \
