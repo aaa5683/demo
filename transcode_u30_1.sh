@@ -20,8 +20,8 @@ out_3_width=2560: out_3_height=1440: out_3_rate=full: \
 out_4_width=3840: out_4_height=2160: out_4_rate=full [a][b][c][d]' \
 -map '[a]' -cores 4 -b:v 1M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_720p30.mp4 \
 -map '[b]' -cores 4 -b:v 1M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_1080p30.mp4 \
--map '[d]' -cores 4 -b:v 1M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_1440p30.mp4 \
--map '[d]' -cores 4 -b:v 2M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_4k30.mp4"
+-map '[c]' -cores 4 -b:v 1M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_1440p30.mp4 \
+-map '[d]' -cores 4 -b:v 1M -c:v mpsoc_vcu_h264 -c:a copy -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_u30_4k30.mp4"
 
 cmd="time ffmpeg -hide_banner ${FFMPEG_ARGS}"
 

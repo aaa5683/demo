@@ -14,6 +14,9 @@ TR_U30_FLAG=$5
 cd /home/ubuntu/demo
 
 if [[ ${SETTING_FLAG} == '1' ]]; then
+  sudo rm -rf output
+  mkdir output
+
   echo
   echo "> Remove containers below"
   read ENTER
