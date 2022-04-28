@@ -13,10 +13,7 @@ FFMPEG_ARGS="-i ${INPUT_FILE} \
 -s 1280x720 -c:v libx264 -c:a aac -b:v 2.5M -r 60 -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_720p60fps.mp4 \
 -s 1920x1080 -c:v libx264 -c:a aac -b:v 4M -r 30 -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1080p30fps.mp4 \
 -s 1920x1080 -c:v libx264 -c:a aac -b:v 4M -r 60 -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1080p60fps.mp4 \
--s 2560x1440 -c:v libx264 -c:a aac -b:v 8M -r 30 -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1440p30fps.mp4 \
--s 2560x1440 -c:v libx264 -c:a aac -b:v 8M -r 60 -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1440p60fps.mp4 \
--s 3840x2160 -c:v libx264 -c:a aac -b:v 10M -r 30 -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_4k30fps.mp4 \
--s 3840x2160 -c:v libx264 -c:a aac -b:v 10M -r 60 -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_4k60fps.mp4"
+-s 2560x1440 -c:v libx264 -c:a aac -b:v 8M -r 30 -y ${OUTPUT_DIR}/${OUTPUT_FILE_PREFIX_NAME}_1440p30fps.mp4"
 
 cmd="time ffmpeg_nou30 -hide_banner ${FFMPEG_ARGS}"
 
